@@ -249,10 +249,8 @@ public class ExceptionTests
 
     public class PingExceptionHandler : IRequestHandler<PingException>
     {
-        public Task<Unit> Handle(PingException request, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        Task IRequestHandler<PingException>.Handle(PingException request, CancellationToken cancellationToken)
+            => throw new NotImplementedException();
     }
 
     [Fact]

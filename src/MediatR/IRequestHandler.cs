@@ -28,28 +28,13 @@ public interface IRequestHandler<in TRequest, TResponse>
 public interface IRequestHandler<in TRequest> : IRequestHandler<TRequest, Unit>
     where TRequest : IRequest<Unit>
 {
-}
-
-/// <summary>
-/// Wrapper class for a handler that asynchronously handles a request and does not return a response
-/// </summary>
-/// <typeparam name="TRequest">The type of request being handled</typeparam>
-public abstract class AsyncRequestHandler<TRequest> : IRequestHandler<TRequest>
-    where TRequest : IRequest
-{
     async Task<Unit> IRequestHandler<TRequest, Unit>.Handle(TRequest request, CancellationToken cancellationToken)
     {
         await Handle(request, cancellationToken).ConfigureAwait(false);
         return Unit.Value;
     }
 
-    /// <summary>
-    /// Override in a derived class for the handler logic
-    /// </summary>
-    /// <param name="request">Request</param>
-    /// <param name="cancellationToken"></param>
-    /// <returns>Response</returns>
-    protected abstract Task Handle(TRequest request, CancellationToken cancellationToken);
+    public new Task Handle(TRequest request, CancellationToken cancellationToken);
 }
 
 /// <summary>
@@ -78,10 +63,10 @@ public abstract class RequestHandler<TRequest, TResponse> : IRequestHandler<TReq
 public abstract class RequestHandler<TRequest> : IRequestHandler<TRequest>
     where TRequest : IRequest
 {
-    Task<Unit> IRequestHandler<TRequest, Unit>.Handle(TRequest request, CancellationToken cancellationToken)
+    public Task Handle(TRequest request, CancellationToken cancellationToken)
     {
         Handle(request);
-        return Unit.Task;
+        return Task.CompletedTask;
     }
 
     protected abstract void Handle(TRequest request);
