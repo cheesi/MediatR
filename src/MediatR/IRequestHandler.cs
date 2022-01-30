@@ -49,7 +49,7 @@ public abstract class AsyncRequestHandler<TRequest> : IRequestHandler<TRequest>
     /// <param name="request">Request</param>
     /// <param name="cancellationToken"></param>
     /// <returns>Response</returns>
-    protected abstract Task Handle(TRequest request, CancellationToken cancellationToken);
+    public abstract Task Handle(TRequest request, CancellationToken cancellationToken);
 }
 
 /// <summary>
